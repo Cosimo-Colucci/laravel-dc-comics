@@ -1,13 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Guest;
+namespace Database\Seeders;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Guest\Comic;
+use App\Http\Controllers\User\Comic as UserComic;
+use App\Models\comic as ModelsComic;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
 
-class ComicController extends Controller
+class ComicSeeder extends Seeder
 {
-    public function index() {
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
         $comicsList = [
             [
                 "title" => "Action Comics #1000: The Deluxe Edition",
@@ -221,7 +230,19 @@ class ComicController extends Controller
                 ],
             ],
         ];
-        
-        return view('welcome', compact('comicsList'));
+
+        foreach ($comicsList as $comic) {
+           $newComic = new Comic();
+           $newComic->title = $comic['title'];
+           $newComic->description = $comic['description'];
+           $newComic->thumb = $comic['thumb'];
+           $newComic->price = $comic['price'];
+           $newComic->series = $comic['series'];
+           $newComic->sale_date = $comic['sale_date'];
+           $newComic->type = $comic['type'];
+           $newComic->artist = implode(" - ", $comic['artist']);
+           $newComic->writers = implode(" - ", $comic['writers']);
+           $newComic->save();
+        }
     }
 }
